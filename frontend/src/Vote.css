@@ -1,0 +1,17 @@
+.vote-flex-wrapper {
+  padding-top: 30px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.vote-container {
+  width: 100%;
+}
+
+.vote-card {
+  background-color: #efefef;
+  width: 240px;
+  margin-top: 10px;
+  border-radius: 5px;
+}
