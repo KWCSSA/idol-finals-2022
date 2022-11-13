@@ -26,6 +26,11 @@ $ curl localhost:8080
 Greetings from Spring Boot!
 ```
 
+### API documentation
+https://app.swaggerhub.com/templates-docs/BEIHAOZHOU/Voting-System/1.0.0
+
+**Raw file is openapi.yml**
+
 References:
 1. https://spring.io/guides/gs/spring-boot/
 2. https://www.mongodb.com/compatibility/spring-boot
