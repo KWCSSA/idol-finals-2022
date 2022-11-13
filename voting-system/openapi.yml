@@ -1,0 +1,158 @@
+openapi: 3.0.0
+servers: []
+info:
+  description: KWCSSA Voting System 2022
+  version: "1.0.0"
+  title: KWCSSA Voting System
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: admin
+    description: Secured Admin-only calls
+  - name: voter
+    description: Voter calls
+paths:
+  /vote/{id}/{round}:
+    put:
+      tags:
+        - voter
+      summary: Vote
+      operationId: vote
+      description: |
+        By passing in ticket id, round and candidate name, voters can vote. Tickets id are from 1 - 999.
+      parameters:
+        - in: path
+          name: id
+          description: pass a required ticket id to vote
+          required: true
+          schema:
+            type: number
+            example: 1
+        - in: path
+          name: round
+          description: pass a required round to vote
+          required: true
+          schema:
+            type: string
+            example: '决赛'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vote'
+      responses:
+        '200':
+          description: Vote Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '400':
+          description: Already Voted
+  /vote:
+    post:
+      tags:
+        - admin
+      summary: Vote
+      operationId: adminVote
+      description: |
+        By passing in round, candidate name, and ticket numbers, admin can vote. Each time admin votes, backend creates a new ticket with id such that 'admin-1', 'admin-2', etc.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminVote'
+      responses:
+        '200':
+          description: Vote Successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+
+  /result/{round}:
+    get:
+      tags:
+        - admin
+      operationId: getResult
+      description: |
+        By passing in round, admin can get the result.
+      parameters:
+        - in: path
+          name: round
+          description: pass a required round to get result
+          required: true
+          schema:
+            type: string
+            example: '决赛'
+      responses:
+        '200':
+          description: Get ticket result Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                example:
+                  Jack: 70
+                  Lisa: 60
+components:
+  schemas:
+    Vote:
+      type: object
+      required:
+        - candidateName
+      properties:
+        candidateName:
+          type: string
+          example: 'Lambert'
+    AdminVote:
+      type: object
+      required:
+        - round
+        - candidateName
+        - numOfTickets
+      properties:
+        round:
+          type: string
+          example: '复活赛'
+        candidateName:
+          type: string
+          example: 'Jack'
+        numOfTickets:
+          type: number
+          example: 10
+    Ticket:
+      type: object
+      required:
+        - id
+        - '复赛1'
+        - '复赛2'
+        - '复赛3'
+        - '复活赛'
+        - '决赛'
+      properties:
+        id:
+          type: string
+          example: '1'
+        '复赛1':
+          type: string
+          example: 'Jack'
+        '复赛2':
+          type: string
+          example: 'Rose'
+        '复赛3':
+          type: string
+          example: 'Lisa'
+        '复活赛':
+          type: string
+          example: 'Jack'
+        '决赛':
+          type: string
+          example: ''
