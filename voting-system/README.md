@@ -16,6 +16,8 @@
 
 ### Run the Application
 
+Install the plugin: https://projectlombok.org/
+
 ```
 ./mvnw spring-boot:run
 ```
@@ -27,9 +29,9 @@ Greetings from Spring Boot!
 ```
 
 ### API documentation
-https://app.swaggerhub.com/templates-docs/BEIHAOZHOU/Voting-System/1.0.0
+- Raw file is openapi.yml
 
-**Raw file is openapi.yml**
+- Documentation: https://app.swaggerhub.com/templates-docs/BEIHAOZHOU/Voting-System/1.0.0
 
 References:
 1. https://spring.io/guides/gs/spring-boot/
