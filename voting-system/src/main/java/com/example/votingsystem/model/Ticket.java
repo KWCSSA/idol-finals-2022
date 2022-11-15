@@ -12,30 +12,30 @@ public class Ticket {
   private String id;
   @Getter
   @Setter
-  private String 复赛1;
+  private String semiFinalRound1;
 
   @Getter
   @Setter
-  private String 复赛2;
+  private String semiFinalRound2;
 
   @Getter
   @Setter
-  private String 复赛3;
+  private String semiFinalRound3;
 
   @Getter
   @Setter
-  private String 复活赛;
+  private String repechageRound;
 
   @Getter
   @Setter
-  private String 决赛;
+  private String finalRound;
 
   public Ticket(String id) {
     this.id = id;
-    this.复赛1 = "";
-    this.复赛2 = "";
-    this.复赛3 = "";
-    this.复活赛 = "";
-    this.决赛 = "";
+    this.semiFinalRound1 = "";
+    this.semiFinalRound2 = "";
+    this.semiFinalRound3 = "";
+    this.repechageRound = "";
+    this.finalRound = "";
   }
 }

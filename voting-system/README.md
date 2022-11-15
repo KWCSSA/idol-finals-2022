@@ -25,7 +25,7 @@ Install the plugin: https://projectlombok.org/
 Now run the service with curl (in a separate terminal window), by running the following command (shown with its output):
 ```
 $ curl localhost:8080
-Greetings from Spring Boot!
+Greetings from KWCSSA Voting System!
 ```
 
 ### API documentation
@@ -36,3 +36,4 @@ Greetings from Spring Boot!
 References:
 1. https://spring.io/guides/gs/spring-boot/
 2. https://www.mongodb.com/compatibility/spring-boot
+3. https://www.bezkoder.com/spring-boot-mongodb-crud
