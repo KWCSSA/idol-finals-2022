@@ -31,7 +31,7 @@ Greetings from KWCSSA Voting System!
 ### API documentation
 - Raw file is openapi.yml
 
-- Documentation: https://app.swaggerhub.com/templates-docs/BEIHAOZHOU/Voting-System/1.0.0
+- Documentation: https://app.swaggerhub.com/templates-docs/BEIHAOZHOU/Voting-System
 
 References:
 1. https://spring.io/guides/gs/spring-boot/

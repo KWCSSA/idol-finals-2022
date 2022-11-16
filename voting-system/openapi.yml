@@ -2,7 +2,7 @@ openapi: 3.0.0
 servers: []
 info:
   description: KWCSSA Voting System 2022
-  version: "1.0.0"
+  version: "1.1.0"
   title: KWCSSA Voting System
   contact:
     email: you@your-company.com
@@ -15,7 +15,7 @@ tags:
   - name: voter
     description: Voter calls
 paths:
-  /vote/{id}/{round}:
+  /vote/{round}/{id}:
     put:
       tags:
         - voter
@@ -37,7 +37,7 @@ paths:
           required: true
           schema:
             type: string
-            example: '决赛'
+            example: 'finalRound'
       requestBody:
         content:
           application/json:
@@ -52,19 +52,27 @@ paths:
                 $ref: '#/components/schemas/Ticket'
         '400':
           description: Already Voted
-  /vote:
+  /vote/{round}:
     post:
       tags:
         - admin
       summary: Vote
       operationId: adminVote
       description: |
-        By passing in round, candidate name, and ticket numbers, admin can vote. Each time admin votes, backend creates a new ticket with id such that 'admin-1', 'admin-2', etc.
+        By passing in round, candidate name, and ticket numbers, admin can vote. Each time admin votes, backend creates a new ticket with id such that 'admin<randomizedUUID>'.
+      parameters:
+        - in: path
+          name: round
+          description: pass a required round to vote
+          required: true
+          schema:
+            type: string
+            example: 'repechageRound'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AdminVote'
+              $ref: '#/components/schemas/Vote'
       responses:
         '200':
           description: Vote Successfully
@@ -89,7 +97,7 @@ paths:
           required: true
           schema:
             type: string
-            example: '决赛'
+            example: 'semiFinalRound1'
       responses:
         '200':
           description: Get ticket result Successfully
@@ -108,51 +116,39 @@ components:
       type: object
       required:
         - candidateName
+        - numberOfTicket
       properties:
         candidateName:
           type: string
           example: 'Lambert'
-    AdminVote:
-      type: object
-      required:
-        - round
-        - candidateName
-        - numOfTickets
-      properties:
-        round:
-          type: string
-          example: '复活赛'
-        candidateName:
-          type: string
-          example: 'Jack'
-        numOfTickets:
+        numberOfTicket:
           type: number
-          example: 10
+          example: 1
     Ticket:
       type: object
       required:
         - id
-        - '复赛1'
-        - '复赛2'
-        - '复赛3'
-        - '复活赛'
-        - '决赛'
+        - semiFinalRound1
+        - semiFinalRound2
+        - semiFinalRound3
+        - repechageRound
+        - finalRound
       properties:
         id:
           type: string
           example: '1'
-        '复赛1':
+        semiFinalRound1:
           type: string
           example: 'Jack'
-        '复赛2':
+        semiFinalRound2:
           type: string
           example: 'Rose'
-        '复赛3':
+        semiFinalRound3:
           type: string
           example: 'Lisa'
-        '复活赛':
+        repechageRound:
           type: string
           example: 'Jack'
-        '决赛':
+        finalRound:
           type: string
           example: ''
