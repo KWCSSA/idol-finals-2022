@@ -61,29 +61,11 @@ public class TicketController {
     Optional<Ticket> ticket = ticketRepository.findById(id);
     if (ticket.isPresent()) {
       Ticket _ticket = ticket.get();
-      String candidate = vote.getCandidateName();
+      String candidateName = vote.getCandidateName();
       if (getVotedCandidateByRound(_ticket, round) != "") {
         return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
       }
-      switch (round) {
-        case SEMIFINAL1:
-          _ticket.setSemiFinalRound1(candidate);
-          break;
-        case SEMIFINAL2:
-          _ticket.setSemiFinalRound2(candidate);
-          break;
-        case SEMIFINAL3:
-          _ticket.setSemiFinalRound3(candidate);
-          break;
-        case REPECHAGE:
-          _ticket.setRepechageRound(candidate);
-          break;
-        case FINAL:
-          _ticket.setFinalRound(candidate);
-          break;
-        default:
-          break;
-      }
+      setVotedCandidateByRound(_ticket, round, candidateName);
       return new ResponseEntity<>(ticketRepository.save(_ticket), HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
