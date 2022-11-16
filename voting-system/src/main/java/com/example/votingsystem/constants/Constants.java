@@ -10,4 +10,11 @@ public class Constants {
   public static final String SEMIFINAL3 = "semiFinalRound3";
   public static final String REPECHAGE = "repechageRound";
   public static final String FINAL = "finalRound";
+
+
+  public static final String NOT_STARTED = "notStarted";
+
+  public static final String RUNNING = "running";
+
+  public static final String FINISHED = "finished";
 }
