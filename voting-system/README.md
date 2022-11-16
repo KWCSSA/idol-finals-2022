@@ -11,7 +11,8 @@
 2. Java 11
 
 3. Maven 3.8.6
-   - Instruction: https://www.baeldung.com/install-maven-on-windows-linux-mac
+   - Instruction1: https://www.baeldung.com/install-maven-on-windows-linux-mac
+   - Instruction2(if not working for Win10 on Instruction1): https://mkyong.com/maven/how-to-install-maven-in-windows/
    - Installation on Mac: http://harindern.blogspot.com/2014/04/maven-on-mac.html
 
 ### Run the Application
