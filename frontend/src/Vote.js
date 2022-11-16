@@ -1,12 +1,27 @@
 import './Vote.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Space, Modal } from 'antd';
+import hash from 'object-hash';
+
+const displayId = id => {
+  if (id < 10) {
+    return `00${id}`;
+  } else if (id < 100) {
+    return `0${id}`;
+  } else {
+    return id;
+  }
+}
 
 function Vote() {
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState(4);
+  const [userId, setUserId] = useState(0);
+
   // 0：通道未开启
   // 1：未投票
   // 2：已投票
+  // 3：auth未通过
+  // 4: loading
   const mockData = {
     title: '复赛',
     candidates: [
@@ -26,10 +41,21 @@ function Vote() {
   }; // display name 如果没有名字直接显示ABCD
   const mockUserData = '001';
 
-  // TODO:
-  // useEffect(() => {
-  //   // 拉取关于投票是否开始以及可选人的名单
-  // }, []);
+  // QR Code validation
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    setUserId(id);
+    const auth = urlParams.get('auth');
+    const validAuth = hash(`${id}kwcssaidols`, { algorithm: 'md5' });
+
+    if (auth === validAuth) {
+      setStatus(1);
+    } else {
+      setStatus(3);
+    }
+  }, []);
+
 
   const voteCandidate = ({ id, displayName }) => {
     // TODO:
@@ -64,8 +90,7 @@ function Vote() {
       {status === 1 &&
         <Space align="center" size="medium" direction="vertical">
           <h2>{mockData.title}</h2>
-          <h4 class="user-id">{'观众编号：' + mockUserData}</h4>
-          {/* TODO: 要不要加照片？ */}
+          <h4 class="user-id">{'观众编号：' + displayId(userId)}</h4>
           <Space align="center" size="small" direction="vertical">
             {mockData.candidates.map(candidate => (
               <Card hoverable id={candidate.id} className="vote-card"
@@ -78,6 +103,9 @@ function Vote() {
       }
       {status === 2 &&
         <h1>您已投票</h1>
+      }
+      {status === 3 &&
+        <h1>请扫描 QR Code 投票</h1>
       }
     </div>
   );
