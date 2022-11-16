@@ -59,17 +59,16 @@ public class TicketController {
                                      @PathVariable("id") String id,
                                      @RequestBody Vote vote) {
     Optional<Ticket> ticket = ticketRepository.findById(id);
-    if (ticket.isPresent()) {
-      Ticket _ticket = ticket.get();
-      String candidateName = vote.getCandidateName();
-      if (getVotedCandidateByRound(_ticket, round) != "") {
-        return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
-      }
-      setVotedCandidateByRound(_ticket, round, candidateName);
-      return new ResponseEntity<>(ticketRepository.save(_ticket), HttpStatus.OK);
-    } else {
+    if (!ticket.isPresent()) {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    Ticket _ticket = ticket.get();
+    String candidateName = vote.getCandidateName();
+    if (getVotedCandidateByRound(_ticket, round) != "") {
+      return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
+    }
+    setVotedCandidateByRound(_ticket, round, candidateName);
+    return new ResponseEntity<>(ticketRepository.save(_ticket), HttpStatus.OK);
   }
 
   private String getVotedCandidateByRound(Ticket ticket, String round) {
