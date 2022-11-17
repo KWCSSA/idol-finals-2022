@@ -1,3 +1,31 @@
-.bar {
-    padding: 50px;
+.display-container-outer {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.display-container {
+    display: flex;
+    justify-content: center;
+}
+
+.img-frame {
+    height: 90vh;
+}
+
+.right-container {
+    display: flex;
+    justify-content: center;
+    margin-left: 2vw;
+    width: 55vw;
+    height: 90vh;
+    padding: 2vw;
+    background-color: #ecdfed;
+}
+
+.title {
+    font-size: 3rem;
 }

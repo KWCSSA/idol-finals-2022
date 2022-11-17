@@ -12,6 +12,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import faker from 'faker';
+import { Space } from 'antd';
 
 ChartJS.register(
   CategoryScale,
@@ -29,8 +30,7 @@ export const options = {
       display: false,
     },
     title: {
-      display: true,
-      text: '投票结果',
+      display: false,
     },
   },
 };
@@ -42,6 +42,8 @@ export const data = {
   datasets: [
     {
       label: 'Dataset',
+      barThickness: 60,
+      maxBarThickness: 80,
       data: labels.map(() => faker.datatype.number({ min: 0, max: 500 })),
       backgroundColor: 'rgba(53, 162, 235, 0.5)',
     },
@@ -50,7 +52,15 @@ export const data = {
 
 function Display() {
   return (
-    <Bar options={options} data={data} className="bar" />
+    <div className="display-container-outer">
+      <div className="display-container">
+        <img src="img.jpg" className="img-frame" />
+        <Space size="large" direction="vertical" className="right-container" >
+          <h1 className="title">投票结果</h1>
+          <Bar options={options} data={data} />
+        </Space>
+      </div>
+    </div>
   );
 }
 

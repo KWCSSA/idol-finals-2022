@@ -4,7 +4,7 @@ import hash from 'object-hash';
 // ifconfig | grep 'inet 192.168'
 const url = 'http://192.168.1.65:3000/vote';
 
-for (let id = 0; id <= 999; ++id) {
+for (let id = 1; id <= 250; ++id) {
     const auth = hash(`${id}kwcssaidols`, { algorithm: 'md5' });
 
     QRCode.toFile(
@@ -14,4 +14,3 @@ for (let id = 0; id <= 999; ++id) {
         console.error(err);
     })
 }
-
