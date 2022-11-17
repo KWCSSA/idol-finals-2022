@@ -1,10 +1,15 @@
 package com.example.votingsystem.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class Vote {
-  @Getter private String candidateName;
-  @Getter private Integer numberOfTickets;
+  @Setter @Getter
+  private String candidateName;
+
+  @Setter @Getter
+  private Integer numberOfTickets;
+
   public Vote(String candidateName, Integer numberOfTickets) {
     this.candidateName = candidateName;
     this.numberOfTickets = numberOfTickets;
