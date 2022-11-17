@@ -5,11 +5,14 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "VotingCollection")
+@Document(collection = "Test Database")
 public class Ticket {
 
   @Id
+  @Getter
+  @Setter
   private String id;
+
   @Getter
   @Setter
   private String semiFinalRound1;

@@ -17,4 +17,7 @@ public class Constants {
   public static final String RUNNING = "running";
 
   public static final String FINISHED = "finished";
+
+  public static final String TICKET_COLLECTION = "Test Database";
+  public static final String ROUND_STATUS_COLLECTION = "status";
 }

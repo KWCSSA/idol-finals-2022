@@ -43,11 +43,15 @@ public class TicketController {
 
   @PostMapping("/vote/{round}")
   public ResponseEntity<List<Ticket>> adminVote(@PathVariable("round") String round, @RequestBody Vote adminVote) {
+    System.out.println("[adminVote] started");
     List<Ticket> tickets = new ArrayList<Ticket>();
 
+    System.out.println("[adminVote] started");
     for (int i = 0; i < adminVote.getNumOfTickets(); ++i) {
       String uniqueID = "admin" + UUID.randomUUID().toString();
+      System.out.println("[adminVote] started to save new Ticket.");
       Ticket _ticket = ticketRepository.save(new Ticket(uniqueID));
+      System.out.println("[adminVote] finished to save new Ticket.");
       setVotedCandidateByRound(_ticket, round, adminVote.getCandidateName());
       tickets.add(_ticket);
     }
