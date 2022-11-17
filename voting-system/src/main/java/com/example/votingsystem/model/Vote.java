@@ -4,14 +4,14 @@ import lombok.Getter;
 
 public class Vote {
   @Getter private String candidateName;
-  @Getter private Integer numOfTickets;
-  public Vote(String candidateName, Integer numOfTickets) {
+  @Getter private Integer numberOfTickets;
+  public Vote(String candidateName, Integer numberOfTickets) {
     this.candidateName = candidateName;
-    this.numOfTickets = numOfTickets;
+    this.numberOfTickets = numberOfTickets;
   }
 
   public Vote(String candidateName) {
     this.candidateName = candidateName;
-    this.numOfTickets = 1;
+    this.numberOfTickets = 1;
   }
 }

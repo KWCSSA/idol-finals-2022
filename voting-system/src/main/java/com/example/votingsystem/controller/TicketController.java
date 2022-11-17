@@ -45,7 +45,7 @@ public class TicketController {
   public ResponseEntity<List<Ticket>> adminVote(@PathVariable("round") String round, @RequestBody Vote adminVote) {
     List<Ticket> tickets = new ArrayList<Ticket>();
 
-    for (int i = 0; i < adminVote.getNumOfTickets(); ++i) {
+    for (int i = 0; i < adminVote.getNumberOfTickets(); ++i) {
       String uniqueID = "admin" + UUID.randomUUID().toString();
       Ticket _ticket = ticketRepository.save(new Ticket(uniqueID));
       setVotedCandidateByRound(_ticket, round, adminVote.getCandidateName());
