@@ -116,12 +116,12 @@ components:
       type: object
       required:
         - candidateName
-        - numberOfTicket
+        - numberOfTickets
       properties:
         candidateName:
           type: string
           example: 'Lambert'
-        numberOfTicket:
+        numberOfTickets:
           type: number
           example: 1
     Ticket:
