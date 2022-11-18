@@ -13,7 +13,7 @@ const formHelper = [
 ];
 
 function Admin() {
-  const onFinishInit = (values) => {
+  const onFinishInit = async (values) => {
     // validation: 至少有三个选手
     console.log("Success:", values);
     const data = {};
@@ -22,7 +22,8 @@ function Admin() {
       values.roundID === "final"
         ? [values["c0"], values["c1"], values["c2"], values["c3"]]
         : [values["c0"], values["c1"], values["c2"]];
-    initRound(data);
+    console.log("OnFinishInit", data);
+    await initRound(data);
   };
 
   const onToggleChange = (checked) => {
@@ -38,31 +39,34 @@ function Admin() {
     console.log("Failed:", errorInfo);
   };
 
-  const initRound = (data) => {
-    axios
-      .post(`localhost:8080/round/init/${data.roundID}`, {
-        params: {
-          candidateNames: data.candidateNames,
-        },
+  const initRound = async (data) => {
+    console.log("initRound");
+    await axios
+      .post(`http://localhost:8080/round/init/${data.roundID}`, {
+        candidateNames: data.candidateNames,
       })
-      .then((res) => {})
-      .catch((error) => {})
+      .then((res) => {
+        console.log("initRoundComplete");
+      })
+      .catch((error) => {
+        console.log("initRoundCompleteError", error);
+      })
       .then(() => {});
   };
 
   // POST /round/start
-  const startRound = () => {
-    axios
-      .post(`localhost:8080/round/start`)
+  const startRound = async () => {
+    await axios
+      .put(`http://localhost:8080/round/start`)
       .then((res) => {})
       .catch((error) => {})
       .then(() => {});
   };
 
   // POST /round/end
-  const endRound = () => {
-    axios
-      .post(`localhost:8080/round/end`)
+  const endRound = async () => {
+    await axios
+      .put(`http://localhost:8080/round/end`)
       .then((res) => {})
       .catch((error) => {})
       .then(() => {});
@@ -84,15 +88,15 @@ function Admin() {
    *      votesAdded: 5
    * }
    */
-  const adminVote = (data) => {
-    axios
-      .put(`localhost:8080/vote/${data.roundID}/${data.candidateIndex}`, {
-        params: {
-          votesAdded: data.votesAdded,
-        },
+  const adminVote = async (data) => {
+    await axios
+      .put(`http://localhost:8080/vote/${data.candidateIndex}`, {
+        votesAdded: data.votesAdded,
       })
       .then((res) => {})
-      .catch((error) => {})
+      .catch((error) => {
+        console.log(error);
+      })
       .then(() => {});
   };
 

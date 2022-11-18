@@ -50,16 +50,17 @@ function Display() {
     ],
   });
 
-  const getCurrentRound = () => {
-    axios
-      .get(`localhost:8080/round`)
+  const getCurrentRound = async () => {
+    await axios
+      .get(`http://localhost:8080/round`)
       .then((res) => {
+        console.log("getCurrentRound res:", res);
         let names = [];
-        names.push("A " + res["candidateNames"][0]);
-        names.push("B " + res["candidateNames"][1]);
-        names.push("C " + res["candidateNames"][2]);
-        if (res["roundID"] === "final") {
-          names.push("D " + res["candidateNames"][4]);
+        names.push("A " + res["data"]["names"][0]);
+        names.push("B " + res["data"]["names"][1]);
+        names.push("C " + res["data"]["names"][2]);
+        if (res["data"]["roundID"] === "final") {
+          names.push("D " + res["data"]["names"][3]);
         }
         setData({
           labels: names,
@@ -68,7 +69,7 @@ function Display() {
               label: "Dataset",
               barThickness: 60,
               maxBarThickness: 80,
-              data: res["candidateVotes"],
+              data: res["data"]["votes"],
               backgroundColor: "rgba(53, 162, 235, 0.5)",
             },
           ],

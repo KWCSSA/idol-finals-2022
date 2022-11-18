@@ -15,7 +15,7 @@ const displayId = (id) => {
 };
 
 function Vote() {
-  const [status, setStatus] = useState(4);
+  const [status, setStatus] = useState(1);
   const [userId, setUserId] = useState(0);
   const [userAuth, setUserAuth] = useState("");
 
@@ -64,46 +64,40 @@ function Vote() {
   }, []);
 
   // POST /vote/{roundID}
-  const audienceVote = (data) => {
-    axios
-      .post(`localhost:8080/vote`, {
-        params: {
-          candidateIndex: data.candidateIndex,
-          id: userId,
-          auth: userAuth,
-        },
+  const audienceVote = async (data) => {
+    await axios
+      .post(`http://localhost:8080/vote`, {
+        candidateIndex: data.candidateIndex,
+        id: userId,
+        auth: userAuth,
       })
       .then((res) => {
         Modal.success({
           width: 300,
           title: "投票成功",
-          onOk: () => setStatus(2),
         });
       })
       .catch((error) => {
-        if (error.code === "VOTED") {
+        if (error.response.data.message === "VOTED") {
           Modal.info({
             width: 300,
             title: "本轮您已投票",
-            onOk: () => setStatus(2),
           });
-        } else if (error.code === "VOTE_CLOSED") {
+        } else if (error.response.data.message === "VOTE_CLOSED") {
           Modal.warning({
             width: 300,
             title: "投票通道尚未开启",
-            onOk: () => setStatus(0),
           });
-        } else if (error.code === "AUTH_ERROR") {
+        } else if (error.response.data.message === "AUTH_ERROR") {
           Modal.error({
             width: 300,
             title: "投票未成功 请扫描二维码投票",
-            onOk: () => setStatus(0),
+            onOk: () => setStatus(3),
           });
-        } else if (error.code === "FINAL_BUTTON") {
+        } else if (error.response.data.message === "FINAL_BUTTON") {
           Modal.info({
             width: 300,
             title: "决赛尚未开启",
-            onOk: () => setStatus(0),
           });
         }
       })
