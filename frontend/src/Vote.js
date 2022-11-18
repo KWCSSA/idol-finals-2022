@@ -66,7 +66,7 @@ function Vote() {
   // POST /vote/{roundID}
   const audienceVote = async (data) => {
     await axios
-      .post(`http://localhost:8080/vote`, {
+      .post(`3.231.161.68/vote`, {
         candidateIndex: data.candidateIndex,
         id: userId,
         auth: userAuth,
