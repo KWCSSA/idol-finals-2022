@@ -40,7 +40,7 @@ function Admin() {
 
   const initRound = (data) => {
     axios
-      .post(`3.231.161.68:8080/round/init/${data.roundID}`, {
+      .post(`localhost:8080/round/init/${data.roundID}`, {
         params: {
           candidateNames: data.candidateNames,
         },
@@ -53,7 +53,7 @@ function Admin() {
   // POST /round/start
   const startRound = () => {
     axios
-      .post(`3.231.161.68:8080/round/start`)
+      .post(`localhost:8080/round/start`)
       .then((res) => {})
       .catch((error) => {})
       .then(() => {});
@@ -62,7 +62,7 @@ function Admin() {
   // POST /round/end
   const endRound = () => {
     axios
-      .post(`3.231.161.68:8080/round/end`)
+      .post(`localhost:8080/round/end`)
       .then((res) => {})
       .catch((error) => {})
       .then(() => {});
@@ -86,7 +86,7 @@ function Admin() {
    */
   const adminVote = (data) => {
     axios
-      .put(`3.231.161.68:8080/vote/${data.roundID}/${data.candidateIndex}`, {
+      .put(`localhost:8080/vote/${data.roundID}/${data.candidateIndex}`, {
         params: {
           votesAdded: data.votesAdded,
         },

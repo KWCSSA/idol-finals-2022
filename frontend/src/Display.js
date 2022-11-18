@@ -51,18 +51,18 @@ function Display() {
   });
 
   const getCurrentRound = () => {
-    // const res = {
-    //   isVoting: false,
-    //   roundID: "semiFinal1",
-    //   candidateNames: ["A", "B", "C"],
-    //   candidateVotes: [20, 10, 30],
-    // };
-
     axios
-      .get(`3.231.161.68:8080/round`)
+      .get(`localhost:8080/round`)
       .then((res) => {
+        let names = [];
+        names.push("A " + res["candidateNames"][0]);
+        names.push("B " + res["candidateNames"][1]);
+        names.push("C " + res["candidateNames"][2]);
+        if (res["roundID"] === "final") {
+          names.push("D " + res["candidateNames"][4]);
+        }
         setData({
-          labels: res["candidateNames"],
+          labels: names,
           datasets: [
             {
               label: "Dataset",
