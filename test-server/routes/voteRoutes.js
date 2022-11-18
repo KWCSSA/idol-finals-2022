@@ -73,7 +73,7 @@ router.post("/", bodyParser, async (req, res, next) => {
   console.log("3:candidatesNum: ", candidatesNum);
 
   // check if button is valid
-  console.log(candidateIdx, candidatesNum);
+  console.log("test FINAL_BUTTON", candidateIdx, candidatesNum);
   if (candidateIdx < 0 || candidateIdx >= candidatesNum) {
     return res.status(400).send({ message: "FINAL_BUTTON" });
   }
