@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 const router = express.Router();
-const Vote = require("./schemas/VoteSchema");
-const Round = require("./schemas/RoundSchema");
+const Vote = require("./schemas/voteSchema");
+const Round = require("./schemas/roundSchema");
 const bodyParser = require("body-parser").json();
 const hash = require("object-hash");
 
