@@ -52,7 +52,7 @@ function Display() {
 
   const getCurrentRound = async () => {
     await axios
-      .get(`3.231.161.68/round`)
+      .get(`https://3.231.161.68/round`)
       .then((res) => {
         console.log("getCurrentRound res:", res);
         let names = [];
@@ -75,8 +75,8 @@ function Display() {
           ],
         });
       })
-      .catch((error) => {})
-      .then(() => {});
+      .catch((error) => { })
+      .then(() => { });
 
     console.log("data:", data);
   };

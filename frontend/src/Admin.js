@@ -42,7 +42,7 @@ function Admin() {
   const initRound = async (data) => {
     console.log("initRound");
     await axios
-      .post(`3.231.161.68/round/init/${data.roundID}`, {
+      .post(`https://3.231.161.68/round/init/${data.roundID}`, {
         candidateNames: data.candidateNames,
       })
       .then((res) => {
@@ -51,25 +51,25 @@ function Admin() {
       .catch((error) => {
         console.log("initRoundCompleteError", error);
       })
-      .then(() => {});
+      .then(() => { });
   };
 
   // POST /round/start
   const startRound = async () => {
     await axios
-      .put(`3.231.161.68/round/start`)
-      .then((res) => {})
-      .catch((error) => {})
-      .then(() => {});
+      .put(`https://3.231.161.68/round/start`)
+      .then((res) => { })
+      .catch((error) => { })
+      .then(() => { });
   };
 
   // POST /round/end
   const endRound = async () => {
     await axios
-      .put(`3.231.161.68/round/end`)
-      .then((res) => {})
-      .catch((error) => {})
-      .then(() => {});
+      .put(`https://3.231.161.68/round/end`)
+      .then((res) => { })
+      .catch((error) => { })
+      .then(() => { });
   };
 
   const onFinishAddVotes = (values) => {
@@ -90,14 +90,14 @@ function Admin() {
    */
   const adminVote = async (data) => {
     await axios
-      .put(`3.231.161.68/vote/${data.candidateIndex}`, {
+      .put(`https://3.231.161.68/vote/${data.candidateIndex}`, {
         votesAdded: data.votesAdded,
       })
-      .then((res) => {})
+      .then((res) => { })
       .catch((error) => {
         console.log(error);
       })
-      .then(() => {});
+      .then(() => { });
   };
 
   return (
