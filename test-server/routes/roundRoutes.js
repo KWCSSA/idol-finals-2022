@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const router = express.Router();
-const Round = require("../schemas/RoundSchema");
+const Round = require("./schemas/RoundSchema");
 const bodyParser = require("body-parser").json();
 
 app.use(express.urlencoded({ extended: true }));
