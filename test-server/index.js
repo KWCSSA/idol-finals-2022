@@ -12,7 +12,9 @@ const corsOptions = {
 app.use(cors(corsOptions)); // Use this after the variable declaration
 
 mongoose
-  .connect(`${process.env.MONGODB}/final`)
+  .connect(
+    `mongodb+srv://it-kwcssa:NqHdbozqpPY9Psrn@cluster0.33koo.mongodb.net/final`
+  )
   .then(() => {
     console.log("database connection successful.");
   })
