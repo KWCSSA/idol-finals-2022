@@ -42,7 +42,7 @@ function Admin() {
   const initRound = async (data) => {
     console.log("initRound");
     await axios
-      .post(`http://localhost:8080/round/init/${data.roundID}`, {
+      .post(`3.231.161.68/round/init/${data.roundID}`, {
         candidateNames: data.candidateNames,
       })
       .then((res) => {
@@ -57,7 +57,7 @@ function Admin() {
   // POST /round/start
   const startRound = async () => {
     await axios
-      .put(`http://localhost:8080/round/start`)
+      .put(`3.231.161.68/round/start`)
       .then((res) => {})
       .catch((error) => {})
       .then(() => {});
@@ -66,7 +66,7 @@ function Admin() {
   // POST /round/end
   const endRound = async () => {
     await axios
-      .put(`http://localhost:8080/round/end`)
+      .put(`3.231.161.68/round/end`)
       .then((res) => {})
       .catch((error) => {})
       .then(() => {});
@@ -90,7 +90,7 @@ function Admin() {
    */
   const adminVote = async (data) => {
     await axios
-      .put(`http://localhost:8080/vote/${data.candidateIndex}`, {
+      .put(`3.231.161.68/vote/${data.candidateIndex}`, {
         votesAdded: data.votesAdded,
       })
       .then((res) => {})
