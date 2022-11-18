@@ -42,7 +42,7 @@ function Admin() {
   const initRound = async (data) => {
     console.log("initRound");
     await axios
-      .post(`https://3.231.161.68/round/init/${data.roundID}`, {
+      .post(`http://3.231.161.68/round/init/${data.roundID}`, {
         candidateNames: data.candidateNames,
       })
       .then((res) => {
@@ -57,7 +57,7 @@ function Admin() {
   // POST /round/start
   const startRound = async () => {
     await axios
-      .put(`https://3.231.161.68/round/start`)
+      .put(`http://3.231.161.68/round/start`)
       .then((res) => { })
       .catch((error) => { })
       .then(() => { });
@@ -66,7 +66,7 @@ function Admin() {
   // POST /round/end
   const endRound = async () => {
     await axios
-      .put(`https://3.231.161.68/round/end`)
+      .put(`http://3.231.161.68/round/end`)
       .then((res) => { })
       .catch((error) => { })
       .then(() => { });
@@ -90,7 +90,7 @@ function Admin() {
    */
   const adminVote = async (data) => {
     await axios
-      .put(`https://3.231.161.68/vote/${data.candidateIndex}`, {
+      .put(`http://3.231.161.68/vote/${data.candidateIndex}`, {
         votesAdded: data.votesAdded,
       })
       .then((res) => { })
