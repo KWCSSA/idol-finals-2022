@@ -66,7 +66,7 @@ function Vote() {
   // POST /vote/{roundID}
   const audienceVote = async (data) => {
     await axios
-      .post(`http://3.231.161.68/vote`, {
+      .post(`http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/vote`, {
         candidateIndex: data.candidateIndex,
         id: userId,
         auth: userAuth,
@@ -101,7 +101,7 @@ function Vote() {
           });
         }
       })
-      .then(() => { });
+      .then(() => {});
   };
 
   return (

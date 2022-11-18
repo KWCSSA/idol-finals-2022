@@ -42,34 +42,37 @@ function Admin() {
   const initRound = async (data) => {
     console.log("initRound");
     await axios
-      .post(`http://3.231.161.68/round/init/${data.roundID}`, {
-        candidateNames: data.candidateNames,
-      })
+      .post(
+        `http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/round/init/${data.roundID}`,
+        {
+          candidateNames: data.candidateNames,
+        }
+      )
       .then((res) => {
         console.log("initRoundComplete");
       })
       .catch((error) => {
         console.log("initRoundCompleteError", error);
       })
-      .then(() => { });
+      .then(() => {});
   };
 
   // POST /round/start
   const startRound = async () => {
     await axios
-      .put(`http://3.231.161.68/round/start`)
-      .then((res) => { })
-      .catch((error) => { })
-      .then(() => { });
+      .put(`http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/round/start`)
+      .then((res) => {})
+      .catch((error) => {})
+      .then(() => {});
   };
 
   // POST /round/end
   const endRound = async () => {
     await axios
-      .put(`http://3.231.161.68/round/end`)
-      .then((res) => { })
-      .catch((error) => { })
-      .then(() => { });
+      .put(`http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/round/end`)
+      .then((res) => {})
+      .catch((error) => {})
+      .then(() => {});
   };
 
   const onFinishAddVotes = (values) => {
@@ -90,14 +93,17 @@ function Admin() {
    */
   const adminVote = async (data) => {
     await axios
-      .put(`http://3.231.161.68/vote/${data.candidateIndex}`, {
-        votesAdded: data.votesAdded,
-      })
-      .then((res) => { })
+      .put(
+        `http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/vote/${data.candidateIndex}`,
+        {
+          votesAdded: data.votesAdded,
+        }
+      )
+      .then((res) => {})
       .catch((error) => {
         console.log(error);
       })
-      .then(() => { });
+      .then(() => {});
   };
 
   return (
