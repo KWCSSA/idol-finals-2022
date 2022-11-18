@@ -1,9 +1,10 @@
-import './Vote.css';
-import React, { useState, useEffect } from 'react';
-import { Card, Space, Modal } from 'antd';
-import hash from 'object-hash';
+import "./Vote.css";
+import React, { useState, useEffect } from "react";
+import { Card, Space, Modal } from "antd";
+import hash from "object-hash";
+const axios = require("axios");
 
-const displayId = id => {
+const displayId = (id) => {
   if (id < 10) {
     return `00${id}`;
   } else if (id < 100) {
@@ -11,7 +12,7 @@ const displayId = id => {
   } else {
     return id;
   }
-}
+};
 
 function Vote() {
   const [status, setStatus] = useState(4);
@@ -23,31 +24,35 @@ function Vote() {
   // 3：auth未通过
   // 4: loading
   const mockData = {
-    title: '复赛',
+    title: "KWCSSA 校园偶像大赛",
     candidates: [
       {
-        id: 1,
-        displayName: 'A 同学'
+        candidateIndex: 0,
+        displayName: "A",
       },
       {
-        id: 2,
-        displayName: 'B 同学'
+        candidateIndex: 1,
+        displayName: "B",
       },
       {
-        id: 3,
-        displayName: 'C 同学'
-      }
-    ]
+        candidateIndex: 2,
+        displayName: "C",
+      },
+      {
+        candidateIndex: 3,
+        displayName: "D",
+      },
+    ],
   }; // display name 如果没有名字直接显示ABCD
-  const mockUserData = '001';
+  const mockUserData = "001";
 
   // QR Code validation
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
+    const id = urlParams.get("id");
     setUserId(id);
-    const auth = urlParams.get('auth');
-    const validAuth = hash(`${id}kwcssaidols`, { algorithm: 'md5' });
+    const auth = urlParams.get("auth");
+    const validAuth = hash(`${id}kwcssaidols`, { algorithm: "md5" });
 
     if (auth === validAuth) {
       setStatus(1);
@@ -56,57 +61,69 @@ function Vote() {
     }
   }, []);
 
-
-  const voteCandidate = ({ id, displayName }) => {
-    // TODO:
-    // post voted id to the backend
-    // validate if the user has been voted
-    if (false/*success*/) {
-      const modal = Modal.success({
-        width: 300,
-        title: '您已成功为 ' + displayName + ' 投票',
-        onOk: () => setStatus(2)
-      });
-    } else if (false/*已投票*/) {
-      const modal = Modal.info({
-        width: 300,
-        title: '您已为 ' + displayName + ' 投过一票',
-        onOk: () => setStatus(2)
-      });
-    } else if (true/*投票时间已过*/) {
-      const modal = Modal.error({
-        width: 300,
-        title: '投票通道未开启',
-        onOk: () => setStatus(0)
-      });
-    }
-  }
+  // POST /vote/{roundID}
+  const audienceVote = (data) => {
+    axios
+      .post(`3.231.161.68:8080/vote`, {
+        params: {
+          candidateIndex: data.candidateIndex,
+        },
+      })
+      .then((res) => {
+        Modal.success({
+          width: 300,
+          title: "投票成功",
+          onOk: () => setStatus(2),
+        });
+      })
+      .catch((error) => {
+        if (error.code === "VOTED") {
+          Modal.info({
+            width: 300,
+            title: "本轮您已投票",
+            onOk: () => setStatus(2),
+          });
+        } else if (error.code === "VOTE_CLOSED") {
+          Modal.warning({
+            width: 300,
+            title: "投票通道尚未开启",
+            onOk: () => setStatus(0),
+          });
+        } else if (error.code === "AUTH_ERROR") {
+          Modal.error({
+            width: 300,
+            title: "投票未成功 请扫描二维码投票",
+            onOk: () => setStatus(0),
+          });
+        } else if (error.code === "FINAL_BUTTON") {
+          Modal.info({
+            width: 300,
+            title: "决赛尚未开启",
+            onOk: () => setStatus(0),
+          });
+        }
+      })
+      .then(() => {});
+  };
 
   return (
     <div className="vote-flex-wrapper">
-      {status === 0 &&
-        <h1>投票通道尚未开启</h1>
-      }
-      {status === 1 &&
-        <Space align="center" size="medium" direction="vertical">
-          <h2>{mockData.title}</h2>
-          <h4 class="user-id">{'观众编号：' + displayId(userId)}</h4>
-          <Space align="center" size="small" direction="vertical">
-            {mockData.candidates.map(candidate => (
-              <Card hoverable id={candidate.id} className="vote-card"
-                onClick={() => voteCandidate(candidate)}>
-                <h3>{candidate.displayName}</h3>
-              </Card>))
-            }
-          </Space>
+      <Space align="center" size="medium" direction="vertical">
+        <h2>{mockData.title}</h2>
+        <h4 class="user-id">{"观众编号：" + displayId(userId)}</h4>
+        <Space align="center" size="small" direction="vertical">
+          {mockData.candidates.map((candidate) => (
+            <Card
+              hoverable
+              id={candidate.id}
+              className="vote-card"
+              onClick={() => audienceVote(candidate)}
+            >
+              <h3>{candidate.displayName}</h3>
+            </Card>
+          ))}
         </Space>
-      }
-      {status === 2 &&
-        <h1>您已投票</h1>
-      }
-      {status === 3 &&
-        <h1>请扫描 QR Code 投票</h1>
-      }
+      </Space>
     </div>
   );
 }
