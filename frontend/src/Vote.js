@@ -17,6 +17,7 @@ const displayId = (id) => {
 function Vote() {
   const [status, setStatus] = useState(4);
   const [userId, setUserId] = useState(0);
+  const [userAuth, setUserAuth] = useState("");
 
   // 0：通道未开启
   // 1：未投票
@@ -52,6 +53,7 @@ function Vote() {
     const id = urlParams.get("id");
     setUserId(id);
     const auth = urlParams.get("auth");
+    setUserAuth(auth);
     const validAuth = hash(`${id}kwcssaidols`, { algorithm: "md5" });
 
     if (auth === validAuth) {
@@ -67,6 +69,8 @@ function Vote() {
       .post(`3.231.161.68:8080/vote`, {
         params: {
           candidateIndex: data.candidateIndex,
+          id: userId,
+          auth: userAuth,
         },
       })
       .then((res) => {
@@ -108,22 +112,25 @@ function Vote() {
 
   return (
     <div className="vote-flex-wrapper">
-      <Space align="center" size="medium" direction="vertical">
-        <h2>{mockData.title}</h2>
-        <h4 class="user-id">{"观众编号：" + displayId(userId)}</h4>
-        <Space align="center" size="small" direction="vertical">
-          {mockData.candidates.map((candidate) => (
-            <Card
-              hoverable
-              id={candidate.id}
-              className="vote-card"
-              onClick={() => audienceVote(candidate)}
-            >
-              <h3>{candidate.displayName}</h3>
-            </Card>
-          ))}
+      {status === 1 && (
+        <Space align="center" size="medium" direction="vertical">
+          <h2>{mockData.title}</h2>
+          <h4 class="user-id">{"观众编号：" + displayId(userId)}</h4>
+          <Space align="center" size="small" direction="vertical">
+            {mockData.candidates.map((candidate) => (
+              <Card
+                hoverable
+                id={candidate.id}
+                className="vote-card"
+                onClick={() => audienceVote(candidate)}
+              >
+                <h3>{candidate.displayName}</h3>
+              </Card>
+            ))}
+          </Space>
         </Space>
-      </Space>
+      )}
+      {status === 3 && <h1>请重新扫描二维码投票</h1>}
     </div>
   );
 }
