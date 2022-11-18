@@ -23,7 +23,7 @@
     width: 55vw;
     height: 90vh;
     padding: 2vw;
-    background-color: #ecdfed;
+    border: 3px solid #c48ae6;
 }
 
 .title {
