@@ -61,13 +61,13 @@ router.post("/", bodyParser, async (req, res, next) => {
   // valid auth
   const validAuth = hash(`${id}kwcssaidols`, { algorithm: "md5" });
   if (auth !== validAuth) {
-    console.log(`[VOTE] WARN: Audience ${id} - AUTH_ERROR`);
+    // console.log(`[VOTE] WARN: Audience ${id} - AUTH_ERROR`);
     return res.status(400).send({ message: "AUTH_ERROR" });
   }
   const round = await Round.findOne({});
   // check if current round isVoting
   if (!round.isVoting) {
-    console.log(`[VOTE] WARN: Audience ${id} - VOTE_CLOSED`);
+    // console.log(`[VOTE] WARN: Audience ${id} - VOTE_CLOSED`);
     return res.status(400).send({ message: "VOTE_CLOSED" });
   }
   // console.log("1:round: ", round);
@@ -80,7 +80,7 @@ router.post("/", bodyParser, async (req, res, next) => {
   // check if button is valid
   // console.log("test FINAL_BUTTON", candidateIdx, candidatesNum);
   if (candidateIdx < 0 || candidateIdx >= candidatesNum) {
-    console.log(`[VOTE] WARN: Audience ${id} - FINAL_BUTTON`);
+    // console.log(`[VOTE] WARN: Audience ${id} - FINAL_BUTTON`);
     return res.status(400).send({ message: "FINAL_BUTTON" });
   }
 
@@ -94,7 +94,7 @@ router.post("/", bodyParser, async (req, res, next) => {
   // console.log("5:vote: ", vote);
 
   if (vote["voted"][roundIdx]) {
-    console.log(`[VOTE] WARN: Audience ${id} - VOTED`);
+    // console.log(`[VOTE] WARN: Audience ${id} - VOTED`);
     return res.status(400).send({ message: "VOTED" });
   }
 
