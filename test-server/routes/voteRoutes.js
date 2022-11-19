@@ -123,29 +123,28 @@ router.post("/", bodyParser, async (req, res, next) => {
 });
 
 // Admin Vote
-router.put(
-  "/:candidateIndex",
-  bodyParser,
-  authAdmin,
-  bodyParser,
-  async (req, res, next) => {
-    console.log("candidateIdx", req.params.candidateIdx);
-    const candidateIdx = req.params.candidateIndex;
-    const votesAdded = req.body.votesAdded;
-    if (!votesAdded) {
-      return res.status(400).send({ message: "VOTE_FAILED" });
-    }
-    await addVotesToRoundDatabase(res, candidateIdx, votesAdded)
-      .catch((result) => {
-        return res.status(400).send({ message: "VOTE_FAILED" });
-      })
-      .then(() => {
-        console.log(
-          `[ADMIN] Add ${votesAdded} votes to candidate ${candidateIdx}`
-        );
-        return res.sendStatus(200);
-      });
-  }
-);
+// router.put(
+//   "/:candidateIndex",
+//   bodyParser,
+//   authAdmin,
+//   async (req, res, next) => {
+//     console.log("candidateIdx", req.params.candidateIdx);
+//     const candidateIdx = req.params.candidateIndex;
+//     const votesAdded = req.body.votesAdded;
+//     if (!votesAdded) {
+//       return res.status(400).send({ message: "VOTE_FAILED" });
+//     }
+//     await addVotesToRoundDatabase(res, candidateIdx, votesAdded)
+//       .catch((result) => {
+//         return res.status(400).send({ message: "VOTE_FAILED" });
+//       })
+//       .then(() => {
+//         console.log(
+//           `[ADMIN] Add ${votesAdded} votes to candidate ${candidateIdx}`
+//         );
+//         return res.sendStatus(200);
+//       });
+//   }
+// );
 
 module.exports = router;
