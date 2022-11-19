@@ -5,6 +5,7 @@ const Vote = require("./schemas/voteSchema");
 const Round = require("./schemas/roundSchema");
 const bodyParser = require("body-parser").json();
 const hash = require("object-hash");
+const authAdmin = require("./auth/authAdmin");
 
 const roundIDToIdx = {
   semiFinal1: 0,
@@ -29,8 +30,9 @@ const addVotesToRoundDatabase = async (res, candidateIdx, votes) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// for internal use
-router.put("/init", async (req, res, next) => {
+// Admin Reset DB
+router.put("/init", bodyParser, authAdmin, async (req, res, next) => {
+  console.log(`[ADMIN] Resetting DB`);
   await Vote.deleteMany({});
   let count = 0;
   for (let i = 1; i <= 250; ++i) {
@@ -47,10 +49,11 @@ router.put("/init", async (req, res, next) => {
         return res.sendStatus(400);
       });
   }
+  console.log(`[ADMIN] Reset DB Done`);
   return res.sendStatus(200);
 });
 
-// POST /vote/
+// Audience Vote
 router.post("/", bodyParser, async (req, res, next) => {
   const candidateIdx = req.body.candidateIndex;
   const id = req.body.id;
@@ -58,36 +61,40 @@ router.post("/", bodyParser, async (req, res, next) => {
   // valid auth
   const validAuth = hash(`${id}kwcssaidols`, { algorithm: "md5" });
   if (auth !== validAuth) {
+    console.log(`[VOTE] WARN: Audience ${id} - AUTH_ERROR`);
     return res.status(400).send({ message: "AUTH_ERROR" });
   }
   const round = await Round.findOne({});
   // check if current round isVoting
   if (!round.isVoting) {
+    console.log(`[VOTE] WARN: Audience ${id} - VOTE_CLOSED`);
     return res.status(400).send({ message: "VOTE_CLOSED" });
   }
-  console.log("1:round: ", round);
+  // console.log("1:round: ", round);
   const roundIdx = roundIDToIdx[round.roundID];
-  console.log("2:roundIdx: ", roundIdx);
+  // console.log("2:roundIdx: ", roundIdx);
 
   const candidatesNum = round.names.length;
-  console.log("3:candidatesNum: ", candidatesNum);
+  // console.log("3:candidatesNum: ", candidatesNum);
 
   // check if button is valid
-  console.log("test FINAL_BUTTON", candidateIdx, candidatesNum);
+  // console.log("test FINAL_BUTTON", candidateIdx, candidatesNum);
   if (candidateIdx < 0 || candidateIdx >= candidatesNum) {
+    console.log(`[VOTE] WARN: Audience ${id} - FINAL_BUTTON`);
     return res.status(400).send({ message: "FINAL_BUTTON" });
   }
 
   const audienceIDFilter = {
     audienceID: id,
   };
-  console.log("4:audienceIDFilter: ", audienceIDFilter);
+  // console.log("4:audienceIDFilter: ", audienceIDFilter);
 
   // check if voted
   const vote = await Vote.findOne(audienceIDFilter);
-  console.log("5:vote: ", vote);
+  // console.log("5:vote: ", vote);
 
   if (vote["voted"][roundIdx]) {
+    console.log(`[VOTE] WARN: Audience ${id} - VOTED`);
     return res.status(400).send({ message: "VOTED" });
   }
 
@@ -104,9 +111,9 @@ router.post("/", bodyParser, async (req, res, next) => {
     };
 
     await addVotesToRoundDatabase(res, candidateIdx, 1);
-    console.log("Vote.findOneAndUpdate", audienceIDFilter, update);
+    // console.log("Vote.findOneAndUpdate", audienceIDFilter, update);
     await Vote.findOneAndUpdate(audienceIDFilter, update);
-
+    console.log(`[VOTE] Audience ${id} voted for candidate ${candidateIdx}`);
     return res.sendStatus(200);
   } catch {
     (err) => {
@@ -115,18 +122,30 @@ router.post("/", bodyParser, async (req, res, next) => {
   }
 });
 
-// PUT /vote/{candidateIndex}
-router.put("/:candidateIndex", bodyParser, async (req, res, next) => {
-  const candidateIdx = req.params.candidateIndex;
-  const votesAdded = req.body.votesAdded;
-  if (!votesAdded) {
-    return res.status(400).send({ message: "VOTE_FAILED" });
-  }
-  await addVotesToRoundDatabase(res, candidateIdx, votesAdded).catch(
-    (result) => {
+// Admin Vote
+router.put(
+  "/:candidateIndex",
+  bodyParser,
+  authAdmin,
+  bodyParser,
+  async (req, res, next) => {
+    console.log("candidateIdx", req.params.candidateIdx);
+    const candidateIdx = req.params.candidateIndex;
+    const votesAdded = req.body.votesAdded;
+    if (!votesAdded) {
       return res.status(400).send({ message: "VOTE_FAILED" });
     }
-  );
-});
+    await addVotesToRoundDatabase(res, candidateIdx, votesAdded)
+      .catch((result) => {
+        return res.status(400).send({ message: "VOTE_FAILED" });
+      })
+      .then(() => {
+        console.log(
+          `[ADMIN] Add ${votesAdded} votes to candidate ${candidateIdx}`
+        );
+        return res.sendStatus(200);
+      });
+  }
+);
 
 module.exports = router;

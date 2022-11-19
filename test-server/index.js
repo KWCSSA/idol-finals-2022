@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Waterloo Idol Finals Voting System listening on port ${port}`);
 });
 
 const roundRoute = require("./routes/roundRoutes");
