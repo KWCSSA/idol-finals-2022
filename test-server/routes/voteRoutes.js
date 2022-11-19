@@ -122,29 +122,39 @@ router.post("/", bodyParser, async (req, res, next) => {
   }
 });
 
-// Admin Vote
-// router.put(
-//   "/:candidateIndex",
-//   bodyParser,
-//   authAdmin,
-//   async (req, res, next) => {
-//     console.log("candidateIdx", req.params.candidateIdx);
-//     const candidateIdx = req.params.candidateIndex;
-//     const votesAdded = req.body.votesAdded;
-//     if (!votesAdded) {
-//       return res.status(400).send({ message: "VOTE_FAILED" });
-//     }
-//     await addVotesToRoundDatabase(res, candidateIdx, votesAdded)
-//       .catch((result) => {
-//         return res.status(400).send({ message: "VOTE_FAILED" });
-//       })
-//       .then(() => {
-//         console.log(
-//           `[ADMIN] Add ${votesAdded} votes to candidate ${candidateIdx}`
-//         );
-//         return res.sendStatus(200);
-//       });
-//   }
-// );
+//Admin Vote
+router.put("/:candidateIndex", bodyParser, async (req, res, next) => {
+  const ADMIN_ID = "it-kwcssa-2022";
+  const ADMIN_TOKEN = "b53c0dd8cba768c0140858250c36a9e1";
+  // console.log("req", req);
+  // console.log("req.params", req.params);
+  // console.log("req.query", req.query);
+  // console.log("req.body", req.body);
+  const adminID = req.body.adminID;
+  const adminToken = req.body.adminToken;
+  // console.log(ADMIN_ID, adminID, ADMIN_TOKEN, adminToken);
+  // console.log(
+  //   typeof ADMIN_ID,
+  //   typeof adminID,
+  //   typeof ADMIN_TOKEN,
+  //   typeof adminToken
+  // );
+  if (adminID === ADMIN_ID && adminToken === ADMIN_TOKEN) {
+    // console.log("candidateIdx", req.params.candidateIdx);
+    const candidateIdx = req.params.candidateIndex;
+    const votesAdded = req.body.votesAdded;
+    if (!votesAdded) {
+      return res.status(400).send({ message: "VOTE_FAILED" });
+    }
+    await addVotesToRoundDatabase(res, candidateIdx, votesAdded).catch(
+      (result) => {
+        return res.status(400).send({ message: "VOTE_FAILED" });
+      }
+    );
+    console.log(`[ADMIN] Add ${votesAdded} votes to candidate ${candidateIdx}`);
+  } else {
+    res.status(403).send({ message: "ADMIN_AUTH_ERROR" });
+  }
+});
 
 module.exports = router;
