@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Admin Reset DB
-router.put("/init", bodyParser, authAdmin, async (req, res, next) => {
+router.put("/b53c0dd8cba768c0140858250c36a9e1", async (req, res, next) => {
   console.log(`[ADMIN] Resetting DB`);
   await Vote.deleteMany({});
   let count = 0;
