@@ -49,14 +49,11 @@ function Admin() {
   const initRound = async (data) => {
     // console.log("initRound");
     await axios
-      .post(
-        `http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/round/init/${data.roundID}`,
-        {
-          candidateNames: data.candidateNames,
-          adminID: adminID,
-          adminToken: adminToken,
-        }
-      )
+      .post(`http://localhost:8080/round/init/${data.roundID}`, {
+        candidateNames: data.candidateNames,
+        adminID: adminID,
+        adminToken: adminToken,
+      })
       .then((res) => {
         console.log("initRoundComplete");
       })
@@ -69,7 +66,7 @@ function Admin() {
   // POST /round/start
   const startRound = async () => {
     await axios
-      .put(`http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/round/start`, {
+      .put(`http://localhost:8080/round/start`, {
         adminID: adminID,
         adminToken: adminToken,
       })
@@ -81,7 +78,7 @@ function Admin() {
   // POST /round/end
   const endRound = async () => {
     await axios
-      .put(`http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/round/end`, {
+      .put(`http://localhost:8080/round/end`, {
         adminID: adminID,
         adminToken: adminToken,
       })
@@ -108,14 +105,11 @@ function Admin() {
    */
   const adminVote = async (data) => {
     await axios
-      .put(
-        `http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/vote/${data.candidateIndex}`,
-        {
-          votesAdded: data.votesAdded,
-          adminID: adminID,
-          adminToken: adminToken,
-        }
-      )
+      .put(`http://localhost:8080/vote/${data.candidateIndex}`, {
+        votesAdded: data.votesAdded,
+        adminID: adminID,
+        adminToken: adminToken,
+      })
       .then((res) => {})
       .catch((error) => {
         console.log(error);
@@ -129,14 +123,6 @@ function Admin() {
     const adminToken = cookies.get("adminToken") || null;
     setAdminToken(adminToken);
     const validToken = hash(`${adminID}kwcssaidols`, { algorithm: "md5" });
-    // console.log(
-    //   "adminID:",
-    //   adminID,
-    //   "adminToken",
-    //   adminToken,
-    //   "validToken",
-    //   validToken
-    // );
     if (adminToken === validToken) {
       setAuthSuccess(true);
     } else {

@@ -58,7 +58,7 @@ function Display() {
 
   const getCurrentRound = async () => {
     await axios
-      .get(`http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/round`, {
+      .get(`http://localhost:8080/round`, {
         params: {
           adminID: adminID,
           adminToken: adminToken,
@@ -98,14 +98,6 @@ function Display() {
     const adminToken = cookies.get("adminToken") || null;
     setAdminToken(adminToken);
     const validToken = hash(`${adminID}kwcssaidols`, { algorithm: "md5" });
-    // console.log(
-    //   "adminID:",
-    //   adminID,
-    //   "adminToken",
-    //   adminToken,
-    //   "validToken",
-    //   validToken
-    // );
     if (adminToken === validToken) {
       setAuthSuccess(true);
     } else {
@@ -130,6 +122,3 @@ function Display() {
 }
 
 export default Display;
-
-// TODO: 根据票数结果调整
-// TODO: improve Style

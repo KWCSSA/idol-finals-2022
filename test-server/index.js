@@ -10,11 +10,9 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions)); // Use this after the variable declaration
-
+const MONGODB_CONNECTION_STR = "";
 mongoose
-  .connect(
-    `mongodb+srv://it-kwcssa:NqHdbozqpPY9Psrn@cluster0.33koo.mongodb.net/final`
-  )
+  .connect(MONGODB_CONNECTION_STR)
   .then(() => {
     console.log("database connection successful.");
   })
