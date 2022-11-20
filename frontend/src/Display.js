@@ -12,7 +12,8 @@ import {
 import { Bar } from "react-chartjs-2";
 import faker from "faker";
 import { Space } from "antd";
-
+import { Cookies } from "react-cookie";
+import hash from "object-hash";
 const axios = require("axios");
 
 ChartJS.register(
@@ -36,7 +37,12 @@ export const options = {
   },
 };
 
+const cookies = new Cookies();
+
 function Display() {
+  const [adminID, setAdminID] = useState("");
+  const [adminToken, setAdminToken] = useState("");
+  const [authSuccess, setAuthSuccess] = useState(false);
   const [data, setData] = useState({
     labels: ["A", "B", "C"],
     datasets: [
@@ -52,9 +58,14 @@ function Display() {
 
   const getCurrentRound = async () => {
     await axios
-      .get(`http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/round`)
+      .get(`http://ec2-3-231-161-68.compute-1.amazonaws.com:8080/round`, {
+        params: {
+          adminID: adminID,
+          adminToken: adminToken,
+        },
+      })
       .then((res) => {
-        console.log("getCurrentRound res:", res);
+        // console.log("getCurrentRound res:", res);
         let names = [];
         names.push("A " + res["data"]["names"][0]);
         names.push("B " + res["data"]["names"][1]);
@@ -78,17 +89,42 @@ function Display() {
       .catch((error) => {})
       .then(() => {});
 
-    console.log("data:", data);
+    // console.log("data:", data);
   };
+
+  useEffect(() => {
+    const adminID = cookies.get("adminID") || null;
+    setAdminID(adminID);
+    const adminToken = cookies.get("adminToken") || null;
+    setAdminToken(adminToken);
+    const validToken = hash(`${adminID}kwcssaidols`, { algorithm: "md5" });
+    // console.log(
+    //   "adminID:",
+    //   adminID,
+    //   "adminToken",
+    //   adminToken,
+    //   "validToken",
+    //   validToken
+    // );
+    if (adminToken === validToken) {
+      setAuthSuccess(true);
+    } else {
+      setAuthSuccess(false);
+    }
+  }, []);
+
   return (
     <div className="display-container-outer">
-      <div className="display-container">
-        <img src="img.jpg" className="img-frame" onClick={getCurrentRound} />
-        <Space size="large" direction="vertical" className="right-container">
-          <h1 className="title">投票结果</h1>
-          <Bar options={options} data={data} />
-        </Space>
-      </div>
+      {authSuccess && (
+        <div className="display-container">
+          <img src="img.jpg" className="img-frame" onClick={getCurrentRound} />
+          <Space size="large" direction="vertical" className="right-container">
+            <h1 className="title">投票结果</h1>
+            <Bar options={options} data={data} />
+          </Space>
+        </div>
+      )}
+      {!authSuccess && <p>404</p>}
     </div>
   );
 }

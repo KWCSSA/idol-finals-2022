@@ -5,6 +5,7 @@
 ### Prerequisites
 
 1. IDE
+
    - IntelliJ IDEA; or
    - Eclipse
 
@@ -24,17 +25,20 @@ Install the plugin: https://projectlombok.org/
 ```
 
 Now run the service with curl (in a separate terminal window), by running the following command (shown with its output):
+
 ```
-$ curl localhost:8080
+$ curl ec2-3-231-161-68.compute-1.amazonaws.com:8080
 Greetings from KWCSSA Voting System!
 ```
 
 ### API documentation
+
 - Raw file is openapi.yml
 
 - Documentation: https://app.swaggerhub.com/templates-docs/BEIHAOZHOU/Voting-System
 
 References:
+
 1. https://spring.io/guides/gs/spring-boot/
 2. https://www.mongodb.com/compatibility/spring-boot
 3. https://www.bezkoder.com/spring-boot-mongodb-crud
